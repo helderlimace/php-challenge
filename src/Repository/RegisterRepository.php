@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Register;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -46,5 +47,13 @@ class RegisterRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
         ;
     }
-    */
+
+    public function findAll()
+    {
+        $em = $this->getDoctrine()->getEntityManager();
+        $query = $em->createQuery('select r.batch, r.id, r.input, r.key_found from register r');
+        $result = $query->getResult();
+        return $result;
+
+    }*/
 }

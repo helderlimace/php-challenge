@@ -19,9 +19,18 @@ class RegisterController extends AbstractController
      */
     public function index(Request $request): Response
     {
-        $datas = $this->getDoctrine()->getRepository(Register::class)->findAll();
+        $attempts = $request->query->get('attempts');
+        $data = $this->getDoctrine()->getRepository(Register::class);
+        $data = $data->createQueryBuilder('r')
+            ->select('r.batch, r.id, r.input, r.key_found')
+            ->where('r.attempts < :attempts')
+            ->setParameter('attempts', $attempts)
+            ->orderBy('r.attempts', 'desc')
+            ->getQuery()
+            ->getResult();
+
         return $this->json([
-            'data' => $datas,
+            'data' => $data,
         ]);
     }
 

@@ -7,15 +7,16 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=RegisterRepository::class)
+ *
  */
 class Register
 {
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", )
      */
-    protected $id;
+    private $id;
 
     /**
      * @ORM\Column(type="datetime")
@@ -108,7 +109,7 @@ class Register
         return $this;
     }
 
-    public function getKeyRandom(): ?string
+    protected function getKeyRandom(): ?string
     {
         $chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
         $var_size = strlen($chars);
