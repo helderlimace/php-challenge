@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SolicitationRepository;
+use DateInterval;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,6 +12,12 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Solicitation
 {
+
+    public function __construct(){
+        date_default_timezone_set("America/Fortaleza");
+    }
+
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -19,9 +26,9 @@ class Solicitation
     private $id;
 
     /**
-     * @ORM\Column(type="datetime_immutable")
+     * @ORM\Column(type="datetime")
      */
-    private $update_at;
+    private $limitTime;
 
     /**
      * @ORM\Column(type="integer")
@@ -38,15 +45,16 @@ class Solicitation
         return $this->id;
     }
 
-    public function getUpdateAt(): ?\DateTimeImmutable
+    public function getLimitTime(): ?\DateTime
     {
-        return $this->update_at;
+        return $this->limitTime;
     }
 
-    public function setUpdateAt(\DateTimeImmutable $update_at): self
+    public function setLimitTime(): self
     {
-        $this->update_at = $update_at;
-
+        $dateTime = new DateTime('now', new \DateTimeZone('America/Fortaleza'));
+        $hour = $dateTime->modify("+1 minutes");
+        $this->limitTime = $hour;
         return $this;
     }
 
@@ -75,18 +83,17 @@ class Solicitation
     }
 
     public function isAllowed(){
-        $start_date = new DateTime('now', new \DateTimeZone('America/Fortaleza'));
-        $since_start = $start_date->diff($this->getUpdateAt());
-        $minutes = $since_start->days * 24 * 60;
-        $minutes += $since_start->h * 60;
-        $minutes += $since_start->i;
-
-        if($minutes < 1 && $this->getCount() > 10){
+        $now = new DateTime('now', new \DateTimeZone('America/Fortaleza'));
+        $timeLimite = new DateTime($this->getLimitTime()->format("Y-m-d H:i:s"), new \DateTimeZone('America/Fortaleza'));
+        if($this->getCount() >= 10 && $timeLimite < $now) {
+            $this->setCount(1);
+            $this->setLimitTime();
+            return true;
+        }
+        if($this->getCount() >= 10 && $timeLimite > $now){
             return false;
         }
-
         $this->setCount($this->getCount()+1);
         return true;
-
     }
 }

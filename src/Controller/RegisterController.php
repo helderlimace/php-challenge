@@ -47,13 +47,12 @@ class RegisterController extends AbstractController
             $solicitaion = new Solicitation();
             $solicitaion->setIp($request->getClientIp());
             $solicitaion->setCount(1);
-            $solicitaion->setUpdateAt(new \DateTimeImmutable('now', new \DateTimeZone('America/Fortaleza')));
+            $solicitaion->setLimitTime();
             $doctrine = $this->getDoctrine()->getManager();
             $doctrine->persist($solicitaion);
-
             $doctrine->flush();
             $register = new Register();
-            $register->setInput($data['name']);
+            $register->setInput($data['input']);
             $register->search();
             return $this->json([
                 'hash' => $register->getHash(),
@@ -62,13 +61,12 @@ class RegisterController extends AbstractController
             ]);
 
         } else if($solicitaion->isAllowed()) {
-            $solicitaion->setCount($solicitaion->getCount()+1);
             $doctrine = $this->getDoctrine()->getManager();
             $doctrine->persist($solicitaion);
             $doctrine->flush();
             $register = new Register();
             $register->setBatch(new \DateTimeImmutable('now', new \DateTimeZone('America/Fortaleza')));
-            $register->setInput($data['name']);
+            $register->setInput($data['input']);
             $register->search();
             $doctrine->persist($register);
             $doctrine->flush();
@@ -82,6 +80,5 @@ class RegisterController extends AbstractController
             'code error' => '429',
             'message error' => 'Too Many Requests',
         ]);
-
     }
 }

@@ -11,6 +11,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Register
 {
+
+    public function __construct(){
+        date_default_timezone_set("America/Fortaleza");
+    }
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
