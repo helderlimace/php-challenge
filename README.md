@@ -44,3 +44,10 @@ php bin/console doctrine:migrations:migrate
 > Accept: */*
 > Content-Length: 13
 ```
+
+Run command
+```bash
+ php bin/console avato:test arg1 arg2
+```
+`arg1: Input to generate key`
+`arg2: Number of requests`

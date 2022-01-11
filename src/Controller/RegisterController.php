@@ -77,8 +77,8 @@ class RegisterController extends AbstractController
             ]);
         }
         return $this->json([
-            'code error' => '429',
-            'message error' => 'Too Many Requests',
+            'code_error' => '429',
+            'message_error' => 'Too Many Requests',
         ]);
     }
 }
