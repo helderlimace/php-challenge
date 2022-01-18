@@ -1,5 +1,4 @@
 # PHP Programmer Challenge
-## Candidate: Helder Lima
 
 ## Installation
 
@@ -25,25 +24,8 @@ php bin/console doctrine:migrations:migrate
 ```
 
 `POST /register/`
-```
-> POST /register/ HTTP/1.1
-> Host: localhost:port
-> User-Agent: insomnia/2021.7.2
-> Content-Type: application/x-www-form-urlencoded
-> Accept: */*
-> Content-Length: 13
-| name=string
-```
 
 `GET /register/`
-```
-> GET /register/ HTTP/1.1
-> Host: localhost:port
-> User-Agent: insomnia/2021.7.2
-> Content-Type: application/x-www-form-urlencoded
-> Accept: */*
-> Content-Length: 13
-```
 
 Run command
 ```bash
